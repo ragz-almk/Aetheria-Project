@@ -15,7 +15,7 @@
     },
     "scene_pilihan": {
         "type": "choice",
-        "bg": "assets/background/lumia_forest.webp"",
+        "bg": "assets/background/lumia_forest.webp",
         "charLeft": "assets/hero.webp",
         "speaker": "Ksatria",
         "text": "Ke mana aku harus pergi?",
