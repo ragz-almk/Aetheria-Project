@@ -88,7 +88,26 @@ function renderScene(nodeId) {
         } else { charRight.classList.add("hidden"); }
 
         speakerName.innerText = sceneData.speaker || "";
-        dialogText.innerText = sceneData.text;
+        // speakerName.innerText = sceneData.speaker || ""; <-- Tetap biarkan baris ini
+        
+        // --- SISTEM EFEK MENGETIK BARU ---
+        clearInterval(typingInterval); // Hentikan ketikan sebelumnya jika ada
+        dialogText.innerText = "";     // Kosongkan kotak teks
+        currentFullText = sceneData.text;
+        isTyping = true;
+        
+        let charIndex = 0;
+        typingInterval = setInterval(() => {
+            if (charIndex < currentFullText.length) {
+                dialogText.innerText += currentFullText.charAt(charIndex);
+                charIndex++;
+            } else {
+                // Ketikan selesai
+                clearInterval(typingInterval);
+                isTyping = false;
+            }
+        }, 30); // Angka 30 adalah kecepatan (ms). Semakin kecil = semakin cepat.
+        // ---------------------------------
 
         // Tampilkan Pilihan
         if (sceneData.type === "choice") {
@@ -116,9 +135,17 @@ function renderScene(nodeId) {
 
 // Lanjut adegan saat diklik
 function handleNextClick() {
+    // 1. Jika masih mengetik, klik berfungsi untuk langsung memunculkan semua teks
+    if (isTyping) {
+        clearInterval(typingInterval);
+        dialogText.innerText = currentFullText;
+        isTyping = false;
+        return; // Hentikan fungsi di sini agar tidak pindah adegan
+    }
+
+    // 2. Jika sudah selesai mengetik, klik berfungsi untuk pindah adegan
     const sceneData = currentStoryData[currentNodeId];
     if (sceneData && sceneData.type !== "choice") {
-        // CEK: Apakah adegan ini menyuruh pindah chapter?
         if (sceneData.target_file) {
             loadChapter(sceneData.target_file, sceneData.next);
         } else {
@@ -136,4 +163,5 @@ function resetGame() {
     gameScreen.classList.add("hidden");
     mainMenu.classList.remove("hidden");
 }
+
 
