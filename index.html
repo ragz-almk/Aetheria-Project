@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Visual Novel Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        
+        <div id="main-menu" class="screen">
+            <h1>Judul Game Kamu</h1>
+            <button id="play-btn">Mainkan</button>
+        </div>
+
+        <div id="narration-screen" class="screen hidden">
+            <p id="narration-text"></p>
+        </div>
+
+        <div id="game-screen" class="screen hidden">
+            <div id="bg-image"></div>
+            
+            <div id="characters">
+                <img id="char-left" class="char hidden" src="" alt="Karakter Kiri">
+                <img id="char-right" class="char hidden" src="" alt="Karakter Kanan">
+            </div>
+            
+            <div id="ui-layer">
+                <div id="dialog-box" class="hidden">
+                    <div id="speaker-name">Nama Karakter</div>
+                    <div id="dialog-text">Teks percakapan muncul di sini...</div>
+                </div>
+                
+                <div id="choices-box" class="hidden">
+                    </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

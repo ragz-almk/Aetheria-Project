@@ -1,0 +1,146 @@
+/* Reset dasar */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none; /* Mencegah teks tersorot tidak sengaja di HP */
+}
+
+body {
+    background-color: #000;
+    font-family: sans-serif;
+    overflow: hidden; /* Mencegah scroll layar */
+}
+
+/* Container utama berukuran penuh layar */
+#game-container {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    background-color: #000;
+}
+
+/* Class untuk semua layar */
+.screen {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* --- Menu Utama --- */
+#main-menu {
+    background-color: #222;
+    color: white;
+}
+#play-btn {
+    margin-top: 20px;
+    padding: 15px 40px;
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #fff;
+    border: none;
+    border-radius: 5px;
+}
+
+/* --- Layar Narasi --- */
+#narration-screen {
+    background-color: black;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    cursor: pointer; /* Memberi tahu user bisa diklik */
+}
+
+/* --- Layar Game --- */
+#bg-image {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+}
+
+#characters {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+}
+
+/* Karakter responsif agar muat di portrait dan landscape */
+.char {
+    position: absolute;
+    bottom: 10%; /* Sedikit di atas kotak dialog */
+    max-height: 70%; 
+    max-width: 45%;
+    object-fit: contain;
+}
+#char-left { left: 5%; }
+#char-right { right: 5%; }
+
+/* --- UI (Kotak Teks & Pilihan) --- */
+#ui-layer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 30%; /* Mengambil 30% area bawah layar */
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+#dialog-box {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 15px;
+    height: 100%;
+    border-top: 2px solid #fff;
+    cursor: pointer;
+}
+
+#speaker-name {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+    color: #ffd700; /* Warna nama karakter */
+}
+
+#dialog-text {
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+#choices-box {
+    position: absolute;
+    bottom: 35%; /* Muncul di atas kotak dialog */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.choice-btn {
+    padding: 10px 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 2px solid #333;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    width: 80%;
+    max-width: 400px;
+}
