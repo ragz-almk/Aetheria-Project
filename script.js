@@ -88,7 +88,6 @@ function renderScene(nodeId) {
         } else { charRight.classList.add("hidden"); }
 
         speakerName.innerText = sceneData.speaker || "";
-        // speakerName.innerText = sceneData.speaker || ""; <-- Tetap biarkan baris ini
         
         // --- SISTEM EFEK MENGETIK BARU ---
         clearInterval(typingInterval); // Hentikan ketikan sebelumnya jika ada
@@ -163,5 +162,6 @@ function resetGame() {
     gameScreen.classList.add("hidden");
     mainMenu.classList.remove("hidden");
 }
+
 
 
