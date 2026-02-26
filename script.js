@@ -1,45 +1,5 @@
-// --- 1. DATA CERITA (NASKAH) ---
-// Kamu bisa mengganti URL gambar dengan nama file gambarmu (misal: 'bg1.png')
-const storyData = {
-    "start_narration": {
-        type: "narration",
-        text: "Di sebuah dunia yang jauh, petualanganmu dimulai...",
-        next: "scene_1" // Lanjut ke scene_1 saat di-klik
-    },
-    "scene_1": {
-        type: "dialog",
-        bg: "https://via.placeholder.com/800x600/333333/ffffff?text=Background+Hutan", // Ganti dengan gambar BG-mu
-        charLeft: "https://via.placeholder.com/300x500/ff9999/000000?text=Karakter+Kiri", // Ganti gambar
-        charRight: "", // Kosongkan jika tidak ada karakter kanan di momen ini
-        speaker: "Ksatria",
-        text: "Berhenti di sana! Siapa kamu?",
-        next: "scene_2"
-    },
-    "scene_2": {
-        type: "choice", // Momen pilihan (Bercabang)
-        bg: "https://via.placeholder.com/800x600/333333/ffffff?text=Background+Hutan",
-        charLeft: "https://via.placeholder.com/300x500/ff9999/000000?text=Karakter+Kiri",
-        charRight: "https://via.placeholder.com/300x500/9999ff/000000?text=Karakter+Kanan",
-        speaker: "Ksatria",
-        text: "Tentukan sikapmu sekarang!",
-        choices: [
-            { text: "Lari sekuat tenaga", target: "ending_lari" },
-            { text: "Melawan ksatria itu", target: "ending_lawan" }
-        ]
-    },
-    "ending_lari": {
-        type: "narration",
-        text: "Kamu berhasil melarikan diri. Cerita selesai.\n(Klik untuk kembali ke Menu Utama)",
-        next: "main_menu" // Kembali ke main menu
-    },
-    "ending_lawan": {
-        type: "narration",
-        text: "Kamu bertarung dengan gagah berani, namun... Cerita selesai.\n(Klik untuk kembali ke Menu Utama)",
-        next: "main_menu"
-    }
-};
-
-// --- 2. VARIABEL GAME ---
+// --- 1. VARIABEL GAME ---
+let currentStoryData = {}; // Sekarang datanya kosong di awal
 let currentNodeId = "";
 
 // Ambil elemen dari HTML
@@ -56,12 +16,31 @@ const speakerName = document.getElementById("speaker-name");
 const dialogText = document.getElementById("dialog-text");
 const choicesBox = document.getElementById("choices-box");
 
+// --- 2. FUNGSI MEMUAT CHAPTER (JSON) ---
+// Ini adalah sistem baru untuk mengambil file .json
+async function loadChapter(fileName, startNodeId) {
+    try {
+        // Minta file ke server / local
+        const response = await fetch(fileName);
+        
+        // Ubah teks file menjadi objek JavaScript
+        currentStoryData = await response.json(); 
+        
+        // Jalankan adegan pertama di chapter tersebut
+        renderScene(startNodeId);
+    } catch (error) {
+        console.error("Gagal memuat chapter:", error);
+        alert("Terjadi kesalahan saat memuat cerita!");
+    }
+}
+
 // --- 3. FUNGSI UTAMA ---
 
-// Memulai Game
+// Memulai Game (Load chapter pertama)
 playBtn.addEventListener("click", () => {
     mainMenu.classList.add("hidden");
-    renderScene("start_narration"); // Ganti dengan ID adegan pertamamu
+    // Panggil file prolog.json, mulai dari "start_narration"
+    loadChapter("story/prolog.json", "start_narration"); 
 });
 
 // Menampilkan Adegan
@@ -72,7 +51,12 @@ function renderScene(nodeId) {
     }
 
     currentNodeId = nodeId;
-    const sceneData = storyData[nodeId];
+    const sceneData = currentStoryData[nodeId];
+
+    if (!sceneData) {
+        console.error("Adegan tidak ditemukan:", nodeId);
+        return;
+    }
 
     // Sembunyikan semua layar dulu
     narrationScreen.classList.add("hidden");
@@ -81,48 +65,44 @@ function renderScene(nodeId) {
     dialogBox.classList.add("hidden");
 
     if (sceneData.type === "narration") {
-        // Tampilkan layar hitam narasi
         narrationScreen.classList.remove("hidden");
         narrationText.innerText = sceneData.text;
     } 
     else if (sceneData.type === "dialog" || sceneData.type === "choice") {
-        // Tampilkan layar visual novel
         gameScreen.classList.remove("hidden");
         dialogBox.classList.remove("hidden");
         
-        // Atur Background
-        bgImage.style.backgroundImage = `url('${sceneData.bg}')`;
+        if(sceneData.bg) bgImage.style.backgroundImage = `url('${sceneData.bg}')`;
 
-        // Atur Karakter Kiri
         if (sceneData.charLeft) {
             charLeft.src = sceneData.charLeft;
             charLeft.classList.remove("hidden");
-        } else {
-            charLeft.classList.add("hidden");
-        }
+        } else { charLeft.classList.add("hidden"); }
 
-        // Atur Karakter Kanan
         if (sceneData.charRight) {
             charRight.src = sceneData.charRight;
             charRight.classList.remove("hidden");
-        } else {
-            charRight.classList.add("hidden");
-        }
+        } else { charRight.classList.add("hidden"); }
 
-        // Atur Teks Dialog
-        speakerName.innerText = sceneData.speaker;
+        speakerName.innerText = sceneData.speaker || "";
         dialogText.innerText = sceneData.text;
 
-        // Atur Pilihan (Jika ada)
+        // Tampilkan Pilihan
         if (sceneData.type === "choice") {
-            choicesBox.innerHTML = ""; // Bersihkan pilihan sebelumnya
+            choicesBox.innerHTML = "";
             sceneData.choices.forEach(choice => {
                 const btn = document.createElement("button");
                 btn.className = "choice-btn";
                 btn.innerText = choice.text;
+                
                 btn.onclick = (e) => {
-                    e.stopPropagation(); // Mencegah klik tembus ke bawahnya
-                    renderScene(choice.target);
+                    e.stopPropagation();
+                    // CEK: Apakah pilihan ini pindah chapter (file json lain)?
+                    if (choice.target_file) {
+                        loadChapter(choice.target_file, choice.target);
+                    } else {
+                        renderScene(choice.target);
+                    }
                 };
                 choicesBox.appendChild(btn);
             });
@@ -131,20 +111,23 @@ function renderScene(nodeId) {
     }
 }
 
-// Fungsi untuk lanjut adegan saat diklik (Hanya berlaku kalau bukan mode pilihan)
+// Lanjut adegan saat diklik
 function handleNextClick() {
-    const sceneData = storyData[currentNodeId];
+    const sceneData = currentStoryData[currentNodeId];
     if (sceneData && sceneData.type !== "choice") {
-        renderScene(sceneData.next);
+        // CEK: Apakah adegan ini menyuruh pindah chapter?
+        if (sceneData.target_file) {
+            loadChapter(sceneData.target_file, sceneData.next);
+        } else {
+            renderScene(sceneData.next);
+        }
     }
 }
 
-// Tambahkan event listener untuk klik layar guna melanjutkan cerita
 narrationScreen.addEventListener("click", handleNextClick);
 dialogBox.addEventListener("click", handleNextClick);
-bgImage.addEventListener("click", handleNextClick); // Klik background juga bisa lanjut
+bgImage.addEventListener("click", handleNextClick);
 
-// Fungsi kembali ke Menu Utama
 function resetGame() {
     narrationScreen.classList.add("hidden");
     gameScreen.classList.add("hidden");
