@@ -6,7 +6,7 @@
     },
     "scene_guild_1": {
         "type": "dialog",
-        "bg": "assets/bg-guild.webp",
+        "bg": "assets/background/lumia_forest.webp"",
         "charLeft": "",
         "charRight": "assets/guild_master.webp",
         "speaker": "Guild Master",
