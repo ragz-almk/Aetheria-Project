@@ -1,6 +1,9 @@
 // --- 1. VARIABEL GAME ---
 let currentStoryData = {}; // Sekarang datanya kosong di awal
 let currentNodeId = "";
+let typingInterval;
+let isTyping = false;
+let currentFullText = "";
 
 // Ambil elemen dari HTML
 const mainMenu = document.getElementById("main-menu");
@@ -133,3 +136,4 @@ function resetGame() {
     gameScreen.classList.add("hidden");
     mainMenu.classList.remove("hidden");
 }
+
