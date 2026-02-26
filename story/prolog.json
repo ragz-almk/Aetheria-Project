@@ -1,0 +1,39 @@
+{
+    "start_narration": {
+        "type": "narration",
+        "text": "Di sebuah dunia yang jauh, Aetheria Project dimulai...",
+        "next": "scene_1"
+    },
+    "scene_1": {
+        "type": "dialog",
+        "bg": "assets/bg-hutan.webp",
+        "charLeft": "assets/hero.webp",
+        "charRight": "",
+        "speaker": "Ksatria",
+        "text": "Aku harus memilih jalan hidupku.",
+        "next": "scene_pilihan"
+    },
+    "scene_pilihan": {
+        "type": "choice",
+        "bg": "assets/bg-hutan.webp",
+        "charLeft": "assets/hero.webp",
+        "speaker": "Ksatria",
+        "text": "Ke mana aku harus pergi?",
+        "choices": [
+            { 
+                "text": "Pergi ke Guild (Jalur Petualang)", 
+                "target": "awal_guild",
+                "target_file": "story/jalur_petualang.json" 
+            },
+            { 
+                "text": "Tidur saja (Tetap di Prolog)", 
+                "target": "ending_tidur"
+            }
+        ]
+    },
+    "ending_tidur": {
+        "type": "narration",
+        "text": "Kamu tidur. Tamat.\n(Klik untuk ke menu utama)",
+        "next": "main_menu"
+    }
+}
