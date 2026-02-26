@@ -87,9 +87,24 @@ body {
     max-height: 70%; 
     max-width: 45%;
     object-fit: contain;
+    transition: opacity 0.4s ease-in-out;
+    opacity: 1;
 }
-#char-left { left: 5%; }
-#char-right { right: 5%; }
+img.char.hidden {
+    display: block !important; /* Jangan gunakan display: none agar bisa transisi */
+    opacity: 0 !important;     /* Tembus pandang saat disembunyikan */
+    pointer-events: none;
+}
+
+#char-left { 
+    left: 5%; 
+    /* Membalik/Mirror gambar karakter kiri agar selalu berhadapan */
+    transform: scaleX(-1); 
+}
+
+#char-right { 
+    right: 5%; 
+}
 
 /* --- UI (Kotak Teks & Pilihan) --- */
 #ui-layer {
@@ -143,4 +158,5 @@ body {
     cursor: pointer;
     width: 80%;
     max-width: 400px;
+
 }
