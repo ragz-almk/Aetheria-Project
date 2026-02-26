@@ -1,0 +1,16 @@
+{
+    "awal_guild": {
+        "type": "narration",
+        "text": "Kamu berjalan menuju kota dan masuk ke dalam Guild...",
+        "next": "scene_guild_1"
+    },
+    "scene_guild_1": {
+        "type": "dialog",
+        "bg": "assets/bg-guild.webp",
+        "charLeft": "",
+        "charRight": "assets/guild_master.webp",
+        "speaker": "Guild Master",
+        "text": "Selamat datang di Guild Aetheria! Siap menerima misi?",
+        "next": "main_menu"
+    }
+}
