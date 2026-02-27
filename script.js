@@ -91,7 +91,7 @@ function renderScene(nodeId) {
         
         // --- SISTEM EFEK MENGETIK BARU ---
         clearInterval(typingInterval); // Hentikan ketikan sebelumnya jika ada
-        dialogText.innerText = "";     // Kosongkan kotak teks
+        dialogText.innerHTML = "";     // Kosongkan kotak teks
         currentFullText = sceneData.text;
         isTyping = true;
         
@@ -137,7 +137,7 @@ function handleNextClick() {
     // 1. Jika masih mengetik, klik berfungsi untuk langsung memunculkan semua teks
     if (isTyping) {
         clearInterval(typingInterval);
-        dialogText.innerText = currentFullText;
+        dialogText.innerHTML = currentFullText;
         isTyping = false;
         return; // Hentikan fungsi di sini agar tidak pindah adegan
     }
@@ -162,6 +162,7 @@ function resetGame() {
     gameScreen.classList.add("hidden");
     mainMenu.classList.remove("hidden");
 }
+
 
 
 
