@@ -137,6 +137,7 @@ img.char.hidden {
 #dialog-text {
     font-size: 1rem;
     line-height: 1.4;
+    white-space: pre-wrap;
 }
 
 #choices-box {
@@ -160,3 +161,4 @@ img.char.hidden {
     max-width: 400px;
 
 }
+
